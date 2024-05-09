@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="mp3style.css">
+</head>
+
+<body>
+    <div class="player">
+        <ul class="song-list">
+            <li class="song-list-item" onclick="loadSong(0)">
+                <img src="img/img01.jpg" alt="Song 1 Icon">
+                <div class="song-info">
+                    <span class="song-title">Song 1</span>
+                    <span class="song-author">Author 1</span>
+                </div>
+            </li>
+            <li class="song-list-item" onclick="loadSong(1)">
+                <img src="img/img02.jpg" alt="Song 2 Icon">
+                <div class="song-info">
+                    <span class="song-title">Song 2</span>
+                    <span class="song-author">Author 2</span>
+                </div>
+            </li>
+            <li class="song-list-item" onclick="loadSong(2)">
+                <img src="song3-icon.jpg" alt="Song 3 Icon">
+                <div class="song-info">
+                    <span class="song-title">Song 3</span>
+                    <span class="song-author">Author 3</span>
+                </div>
+            </li>
+            <!-- Add more songs to the list as needed -->
+        </ul>
+        <audio id="audioPlayer" controls>
+            Your browser does not support the audio element.
+        </audio>
+        <div class="controls">
+            <button id="prevButton"><i class="fas fa-backward"></i></button>
+            <button id="playButton"><i class="fas fa-play"></i></button>
+            <button id="stopButton"><i class="fas fa-stop"></i></button>
+            <button id="nextButton"><i class="fas fa-forward"></i></button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script>
+        // JavaScript for the player
+        var audioPlayer = document.getElementById('audioPlayer');
+        var prevButton = document.getElementById('prevButton');
+        var playButton = document.getElementById('playButton');
+        var stopButton = document.getElementById('stopButton');
+        var nextButton = document.getElementById('nextButton');
+
+        var mp3List = [
+            { name: 'Song 1', author: 'Author 1', src: 'mp3/01.mp3' },
+            { name: 'Song 2', author: 'Author 2', src: 'mp3/02.mp3' },
+            { name: 'Song 3', author: 'Author 3', src: 'mp3/03.mp3' }
+            // Add more songs to the list as needed
+        ];
+
+        var currentSongIndex = 0;
+
+        function loadSong(index) {
+            var previousSongElement = document.querySelector('.song-list-item.active');
+            if (previousSongElement) {
+                previousSongElement.classList.remove('active');
+            }
+
+            var song = mp3List[index];
+            audioPlayer.src = song.src;
+            audioPlayer.load();
+            playSong();
+
+            var currentSongElement = document.querySelectorAll('.song-list-item')[index];
+            if (currentSongElement) {
+                currentSongElement.classList.add('active');
+            }
+        }
+
+        function playSong() {
+            audioPlayer.play();
+        }
+
+        function pauseSong() {
+            audioPlayer.pause();
+        }
+
+        function stopSong() {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+        }
+
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % mp3List.length;
+            loadSong(currentSongIndex);
+        }
+
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + mp3List.length) % mp3List.length;
+            loadSong(currentSongIndex);
+        }
+
+        playButton.addEventListener('click', playSong);
+        stopButton.addEventListener('click', stopSong);
+        nextButton.addEventListener('click', nextSong);
+        prevButton.addEventListener('click', prevSong);
+
+        // Load the first song
+        loadSong(currentSongIndex);
+    </script>
+</body>
+
+</html>
